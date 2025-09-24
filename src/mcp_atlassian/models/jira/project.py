@@ -86,7 +86,7 @@ class JiraProject(ApiModel):
             lead=lead,
             url=data.get("self"),  # API URL for the project
             category_name=category_name,
-            avatar_url=avatar_url,
+            # avatar_url=avatar_url,
         )
 
     def to_simplified_dict(self) -> dict[str, Any]:
@@ -102,8 +102,8 @@ class JiraProject(ApiModel):
         if self.category_name:
             result["category"] = self.category_name
 
-        if self.avatar_url:
-            result["avatar_url"] = self.avatar_url
+        # if self.avatar_url:
+        #     result["avatar_url"] = self.avatar_url
 
         if self.lead:
             result["lead"] = self.lead.to_simplified_dict()

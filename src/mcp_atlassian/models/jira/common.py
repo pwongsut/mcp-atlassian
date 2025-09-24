@@ -56,20 +56,20 @@ class JiraUser(ApiModel):
             logger.debug("Received non-dictionary data, returning default instance")
             return cls()
 
-        avatar_url = None
-        if avatars := data.get("avatarUrls"):
-            if isinstance(avatars, dict):
-                # Get the largest available avatar (48x48)
-                avatar_url = avatars.get("48x48")
-            else:
-                logger.debug(f"Unexpected avatar data format: {type(avatars)}")
+        # avatar_url = None
+        # if avatars := data.get("avatarUrls"):
+        #     if isinstance(avatars, dict):
+        #         # Get the largest available avatar (48x48)
+        #         avatar_url = avatars.get("48x48")
+        #     else:
+        #         logger.debug(f"Unexpected avatar data format: {type(avatars)}")
 
         return cls(
             account_id=data.get("accountId"),
             display_name=str(data.get("displayName", UNASSIGNED)),
             email=data.get("emailAddress"),
             active=bool(data.get("active", True)),
-            avatar_url=avatar_url,
+            # avatar_url=avatar_url,
             time_zone=data.get("timeZone"),
         )
 
@@ -79,7 +79,7 @@ class JiraUser(ApiModel):
             "display_name": self.display_name,
             "name": self.display_name,  # Add name for backward compatibility
             "email": self.email,
-            "avatar_url": self.avatar_url,
+            # "avatar_url": self.avatar_url,
         }
 
 
@@ -160,10 +160,10 @@ class JiraStatus(ApiModel):
             logger.debug("Received non-dictionary data, returning default instance")
             return cls()
 
-        category = None
-        category_data = data.get("statusCategory")
-        if category_data:
-            category = JiraStatusCategory.from_api_response(category_data)
+        # category = None
+        # category_data = data.get("statusCategory")
+        # if category_data:
+        #     category = JiraStatusCategory.from_api_response(category_data)
 
         # Ensure ID is a string (API sometimes returns integers)
         status_id = data.get("id", JIRA_DEFAULT_ID)
@@ -173,9 +173,9 @@ class JiraStatus(ApiModel):
         return cls(
             id=status_id,
             name=str(data.get("name", UNKNOWN)),
-            description=data.get("description"),
-            icon_url=data.get("iconUrl"),
-            category=category,
+            # description=data.get("description"),
+            # icon_url=data.get("iconUrl"),
+            # category=category,
         )
 
     def to_simplified_dict(self) -> dict[str, Any]:
@@ -184,9 +184,9 @@ class JiraStatus(ApiModel):
             "name": self.name,
         }
 
-        if self.category:
-            result["category"] = self.category.name
-            result["color"] = self.category.color_name
+        # if self.category:
+        #     result["category"] = self.category.name
+        #     result["color"] = self.category.color_name
 
         return result
 
@@ -226,8 +226,8 @@ class JiraIssueType(ApiModel):
         return cls(
             id=issue_type_id,
             name=str(data.get("name", UNKNOWN)),
-            description=data.get("description"),
-            icon_url=data.get("iconUrl"),
+            # description=data.get("description"),
+            # icon_url=data.get("iconUrl"),
         )
 
     def to_simplified_dict(self) -> dict[str, Any]:
@@ -270,8 +270,8 @@ class JiraPriority(ApiModel):
         return cls(
             id=priority_id,
             name=str(data.get("name", NONE_VALUE)),
-            description=data.get("description"),
-            icon_url=data.get("iconUrl"),
+            # description=data.get("description"),
+            # icon_url=data.get("iconUrl"),
         )
 
     def to_simplified_dict(self) -> dict[str, Any]:
