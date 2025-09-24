@@ -533,10 +533,13 @@ class JiraIssue(ApiModel, TimestampMixin):
 
         # Add parent and subtasks if available and requested
         if self.parent and should_include_field("parent"):
-            result["parent"] = self.parent
+            result["parent"] = JiraIssue.from_api_response(self.parent).to_simplified_dict()
 
         if self.subtasks and should_include_field("subtasks"):
-            result["subtasks"] = self.subtasks
+            result["subtasks"] = [
+                JiraIssue.from_api_response(st).to_simplified_dict()
+                for st in self.subtasks
+            ]
 
         # Add security and worklog if available and requested
         if self.security and should_include_field("security"):
